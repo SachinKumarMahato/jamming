@@ -1,7 +1,7 @@
 function Searchbar  ()  {
   return (
     <>
-      <div className="flex flex-col justify-center items-center gap-4 my-12">
+      <div className="flex flex-col justify-center items-center gap-4 py-12">
         <label htmlFor="search">
           <input 
           type="text" 

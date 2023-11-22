@@ -7,7 +7,7 @@ export default {
     theme: {
         extend: {
             backgroundImage: {
-                "backImg": "url('./images/jr-korpa-9XngoIpxcEo-unsplash')"
+                "back-Img": "url('./src/images/music.jpg')"
             }
         },
     },
