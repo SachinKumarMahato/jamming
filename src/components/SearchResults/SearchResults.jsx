@@ -8,7 +8,7 @@ const SearchResult = ({ addTrack, searchResults }) => {
       <h2> Results</h2>
       <TrackList
         tracks={searchResults}
-        onAd={addTrack} 
+        onAdd={addTrack} 
         
       />
     </div>

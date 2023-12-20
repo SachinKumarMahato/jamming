@@ -1,33 +1,33 @@
 import { useCallback } from "react";
 import "./Track.css"
 
-const Track = (props) => {
+const Track = ({onAdd, track, onRemove, isRemoval}) => {
 
-  const addTrack = useCallback((event) => {
-    props.onAdd(props.track);
+  const addToTrack = useCallback(() => {
+    onAdd(track);
 
-  }, [props.onAdd, props.track])
+  }, [onAdd, track])
 
-  const removeTrack = useCallback((event) =>{
-    props.onRemove(props.track)
-  },[props.onRemove, props.track])
+  const removeTrack = useCallback(() =>{
+    onRemove(track)
+  },[onRemove, track])
 
   const renderAction = () => {
-    if(props.isRemoval) {
+    if(isRemoval) {
       return (
         <button className="Track-action" onClick={removeTrack}>-</button>
       );
     }
     return (
-      <button className="Track-action" onClick={addTrack}>+</button>
+      <button className="Track-action" onClick={addToTrack}>+</button>
     )
   }
 
   return (
     <div className="Track">
       <div className="Track-information">
-        <h3>{props.track.name}</h3>
-        <p>{props.track.artist} | {props.track.album}</p>
+        <h3>{track.name}</h3>
+        <p>{track.artist} | {track.album}</p>
       </div>
       {renderAction()}
     </div>

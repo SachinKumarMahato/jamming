@@ -1,7 +1,5 @@
-
-
-const CLIENT_ID = '74c96dcd96a34e608f83f1479fe7dc47'; // Replace with your Spotify API client ID
-const REDIRECT_URI = 'http://localhost:5173'; // Replace with your redirect URI
+const CLIENT_ID = "74c96dcd96a34e608f83f1479fe7dc47"; // Replace with your Spotify API client ID
+const REDIRECT_URI = "http://localhost:5173"; // Replace with your redirect URI
 
 let accessToken;
 
@@ -20,10 +18,10 @@ const Spotify = {
       const expiresIn = Number(expiresInMatch[1]);
 
       // Clear the access token after it expires
-      window.setTimeout(() => (accessToken = ''), expiresIn * 1000);
+      window.setTimeout(() => (accessToken = ""), expiresIn * 1000);
 
       // Clear the parameters from the URL
-      window.history.pushState('Access Token', null, '/');
+      window.history.pushState("Access Token", null, "/");
 
       return accessToken;
     } else {
@@ -37,66 +35,70 @@ const Spotify = {
   async search(term) {
     const accessToken = Spotify.getAccessToken();
     try {
-      const response = await fetch(`https://api.spotify.com/v1/search?type=track&q=${term}` ,{
-        headers: {
-          Authorization: `Bearer ${accessToken}`
+      const response = await fetch(
+        `https://api.spotify.com/v1/search?type=track&q=${term}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         }
-      })
-      if(!response.ok) {
+      );
+      if (!response.ok) {
         throw new Error(`HTTP error! Status: ${accessToken.status}`);
       }
       const jsonResponse = await response.json();
-      if(!jsonResponse.tracks) return [];
+      if (!jsonResponse.tracks) return [];
+      console.log(jsonResponse);
 
-      return jsonResponse.tracks.item.map(track => ({
+      return jsonResponse.tracks.items.map((track) => ({
         id: track.id,
         name: track.name,
         artist: track.artists[0].name,
         album: track.album.name,
-        uri: track.uri
-      }))
-
-    }catch(e){
-      console.error(e)
+        uri: track.uri,
+      }));
+    } catch (e) {
+      console.error(e);
     }
   },
-  
+
   // Other Spotify API methods can be added here
 
   // Example: Save playlist to the user's Spotify account
-  savePlaylist(name, trackUris) {
-    if(!name || !trackUris.length){
+  async savePlaylist(name, trackUris) {
+    const url = `https://api.spotify.com/v1/me`;
+    if (!name || !trackUris.length) {
       return;
     }
     const accessToken = Spotify.getAccessToken;
-    const headers = {Authorization: `Bearer ${accessToken}`};
-    let userId;
-    return fetch(`https://api.spotify.com/v1/me`, {headers: headers}
-    ).then(response => response.json()
-    ).then(jsonResponse => {
-      userId = jsonResponse.id;
-      return fetch(`https://api.spotify.com/v1/users/${userId}/playlists`,
-      {
-        headers: headers,
-        method: 'POST',
-        body: JSON.stringify({name: name})
-      }
-      ).then(response => response.json()
-      ).then(jsonResponse => {
-        const playlistId = jsonResponse.id;
-        return fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`, {
-          headers: headers,
-          method: 'POST',
-          body: JSON.stringify({uris: trackUris})
-        })
-      })
-    })
-  }
+    const headers = { Authorization: `Bearer ${accessToken}` };
+    try {
+      const response = await fetch(url, { headers });
+      const jsonResponse = await response.json();
+      const userId = jsonResponse;
+      // create new playlist
+      const playlistResponse = await fetch(url, {
+        headers,
+        method: "POST",
+        body: JSON.stringify({ name: name }),
+      });
+      const playlistJsonResponse = await playlistResponse.json();
+      const playlistId = playlistJsonResponse.id;
+
+      const addTrackResponse = await fetch(
+        `https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`,
+        {
+          headers,
+          method: "POST",
+          body: JSON.stringify({ uri: trackUris }),
+        }
+      );
+
+      return addTrackResponse;
+    } catch (e) {
+      console.error(e);
+    }
+  },
 };
 
-const {search} = Spotify;
-console.log(search());
-
 export default Spotify;
-
-
