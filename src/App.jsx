@@ -16,13 +16,11 @@ const App = () => {
     Spotify.search(term).then(setSearchResults);
   }, []);
 
-  const addTrack = useCallback(
-    (track) => {
+  const addTrack = useCallback((track) => {
       if (playlistTracks.some((savedTrack) => savedTrack.id === track.id))
         return;
-      setPlaylistName((prevTrack) => [...prevTrack, track]);
-    },
-    [playlistTracks]
+      setPlaylistTracks((prevTrack) => [...prevTrack, track]);
+    },[playlistTracks]
   );
 
   const removeTrack = useCallback((track) => {

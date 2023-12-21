@@ -3,12 +3,15 @@ import "./Track.css"
 
 const Track = ({onAdd, track, onRemove, isRemoval}) => {
 
-  const addToTrack = useCallback(() => {
+
+  const addTrack = useCallback(() => {
+    console.log(track);
     onAdd(track);
 
   }, [onAdd, track])
 
   const removeTrack = useCallback(() =>{
+    console.log(track);
     onRemove(track)
   },[onRemove, track])
 
@@ -19,7 +22,7 @@ const Track = ({onAdd, track, onRemove, isRemoval}) => {
       );
     }
     return (
-      <button className="Track-action" onClick={addToTrack}>+</button>
+      <button className="Track-action" onClick={addTrack}>+</button>
     )
   }
 

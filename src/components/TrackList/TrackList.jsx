@@ -1,4 +1,4 @@
-import Track from "../Track/Track";
+import Track from "../../components/Track/Track";
 import "./Tracklist.css";
 const Tracklist = ({ tracks, onAdd, isRemoval, removeTrack }) => {
   return (
