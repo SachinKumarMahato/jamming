@@ -1,6 +1,7 @@
 // SearchBar.js (Child Component)
 import  { useCallback, useState } from 'react';
 import "./Searchbar.css"
+
 const SearchBar = ({ onSearch }) => {
   const [term, setTerm] = useState('');
   const handleTermChange = useCallback((event) => {

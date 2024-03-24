@@ -5,13 +5,11 @@ const Track = ({onAdd, track, onRemove, isRemoval}) => {
 
 
   const addTrack = useCallback(() => {
-    console.log(track);
     onAdd(track);
 
   }, [onAdd, track])
 
   const removeTrack = useCallback(() =>{
-    console.log(track);
     onRemove(track)
   },[onRemove, track])
 
